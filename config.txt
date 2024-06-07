@@ -1,0 +1,8 @@
+# this is the config file of "applied_tesseract"
+# name USERNAME is being changed with your username
+# / and \ is both accepted
+
+tesseract_path  = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+language_path   = 'C:\\Program Files\\Tesseract-OCR\\tessdata'
+screenshot_path = 'C:\\Users\\USERNAME\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\TempState\\ScreenClip'
+
