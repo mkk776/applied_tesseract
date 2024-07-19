@@ -8,15 +8,14 @@ import sys
 import os
 
 
-def nice_str(value, side='prefix', lenght=10, fill='0'):
-    if side == 'prefix':
+def nice_str(value, lenght, align='left', fill='0'):
+    if align == 'left':
         return (fill*(lenght)+str(value))[-lenght:]
-    if side == 'suffix':
+    if align == 'right':
         return (str(value)+fill*(lenght))[:lenght]
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
-
 
 
 # reading config
@@ -87,11 +86,48 @@ for filename in files:
 languages = sorted(languages)
 
 clear()
-for i in range(len(languages)):
-    print(nice_str(i+1, lenght=1+1*(len(languages)>=10), fill=' ') + ') ' + languages[i])
+lenght_of_languages = len(languages)
 
-print('\nfor more languages, download .traineddata files and put it in "{}" folder'.format(language_path))
-sel3 = input('\nyour selection? :')
+    
+terminal_size = list(os.get_terminal_size())
+terminal_size[1] = 10
+
+end_of_line_marigin = 2+1+int(-0.001+len('for more languages, download .traineddata files and put it in "{}" folder'.format(language_path))/terminal_size[0])
+
+while True:
+    max_word_lenght = max([len(i) for i in languages])
+    words_per_line = lenght_of_languages//(terminal_size[1]-end_of_line_marigin)
+    words_per_line_remainer = lenght_of_languages%(terminal_size[1]-end_of_line_marigin)
+    lines = round((lenght_of_languages-words_per_line_remainer)/words_per_line)
+
+    #print(words_per_line, words_per_line_remainer, lines)
+
+    print_out = []
+    for line_no in range(lines):
+        out = ''
+        line_lenght = words_per_line+1*(line_no<words_per_line_remainer)
+        for word_no in range(line_lenght):
+            if word_no == line_lenght-1:
+                pass
+                no=word_no*lines+line_no
+                out += nice_str(no+1, len(str(lenght_of_languages+1)), fill=' ') + ')' + languages[no]
+            else:
+                no=word_no*lines+line_no
+                out += nice_str(no+1, len(str(lenght_of_languages+1)), fill=' ') + ')' + nice_str(languages[no], max_word_lenght, fill=' ', align='right') + ' '
+        print_out.append(out)
+
+    max_out_lenght = max([len(i) for i in print_out])
+    if max_out_lenght < terminal_size[0]:
+        break
+    else:
+        terminal_size[1] = terminal_size[1]+1
+clear()
+print('\n'.join(print_out))
+print('')
+
+
+print('for more languages, download .traineddata files and put it in "{}" folder'.format(language_path))
+sel3 = input('your selection? :')
 assert int(sel3) == float(sel3)
 sel3 = int(sel3)
 assert 0<sel3
