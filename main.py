@@ -142,7 +142,12 @@ print('language set to "{}"\nListening...\n\n'.format(language))
 # ----------------
 
 
-
+# creating ScreenClip folder if it doesn't exist
+if not os.path.isdir(screenshot_path):
+    screenshot_path_without_ScreenClip = os.path.sep.join(screenshot_path.split(os.path.sep)[:-1])
+    if os.path.isdir(screenshot_path_without_ScreenClip):
+        os.mkdir(screenshot_path)
+# ----------------
 
 
 # detection and proccessing
